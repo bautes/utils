@@ -1,3 +1,9 @@
+/***
+ * Returns a new Date set on given parameters.
+ * @param {String} A valid format. PHP date standard.
+ * @param {String} The date to be parsed
+ * @returns {Date}
+ */
 function dateFormat(format, strdate) {
     var expr = /(dd|mm|YYYY|YY|HH|ii|ss)/g,
     pieces = format.match(expr),
@@ -29,15 +35,21 @@ function dateFormat(format, strdate) {
         ),10)||null);
     }
     var returnDate = new Date;
-    if (myDate.year !== null) returnDate.setFullYear(myDate.year);
-    if (myDate.month !== null) returnDate.setMonth(myDate.month - 1);
-    if (myDate.day !== null) returnDate.setDate(myDate.day);
-    if (myDate.hour !== null) returnDate.setHours(myDate.hour);
-    if (myDate.minute !== null) returnDate.setMinutes(myDate.minute);
-    if (myDate.second !== null) returnDate.setSeconds(myDate.second);
+    returnDate.setFullYear((myDate.year !== null ? myDate.year : 0));
+    returnDate.setMonth((myDate.month !== null ? myDate.month - 1 : 0));
+    returnDate.setDate((myDate.day !== null ? myDate.day : 0));
+    returnDate.setHours((myDate.hour !== null ? myDate.hour : 0));
+    returnDate.setMinutes((myDate.minute !== null ? myDate.minute : 0));
+    returnDate.setSeconds((myDate.second !== null ? myDate.second : 0));
     return returnDate;
 }
 
+/***
+ * Formats the given date with the corresponding format.
+ * @param {Date} date.
+ * @param {String} format. Valid format. PHP date standard.
+ * @returns {String}
+ */
 function formatDate(date, format) {
     var expr = /(dd|mm|YYYY|YY|HH|ii|ss)/g,
     pieces = format.match(expr),
