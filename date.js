@@ -36,7 +36,8 @@ function dateFormat(format, strdate) {
     }
     var returnDate = new Date;
     returnDate.setFullYear((myDate.year !== null ? myDate.year : 0));
-    returnDate.setMonth((myDate.month !== null ? myDate.month - 1 : 0));
+    returnDate.setMonth((myDate.month !== null ? (myDate.month - 1) : 0));
+    returnDate.setMonth((myDate.month !== null ? (myDate.month - 1) : 0));
     returnDate.setDate((myDate.day !== null ? myDate.day : 0));
     returnDate.setHours((myDate.hour !== null ? myDate.hour : 0));
     returnDate.setMinutes((myDate.minute !== null ? myDate.minute : 0));
