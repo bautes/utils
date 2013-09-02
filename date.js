@@ -1,39 +1,39 @@
-/***
+/*******************************************************************************
  * Returns a new Date set on given parameters.
- * @param {String} A valid format. PHP date standard.
- * @param {String} The date to be parsed
+ * 
+ * @param {String}
+ *            A valid format. PHP date standard.
+ * @param {String}
+ *            The date to be parsed
  * @returns {Date}
  */
 function dateFormat(format, strdate) {
-    var expr = /(dd|mm|YYYY|YY|HH|ii|ss)/g,
-    pieces = format.match(expr),
-    map = function (type) {
-        switch (type){
-            case 'dd':
-                return 'day';
-            case 'mm':
-                return 'month';
-            case 'YYYY':
-            case 'YY':
-                return 'year';
-            case 'HH':
-                return 'hour';
-            case 'ii':
-                return 'minute';
-            case 'ss':
-                return 'second';
+    var expr = /(dd|mm|YYYY|YY|HH|ii|ss)/g, pieces = format.match(expr),
+        map = function(type) {
+            var obj = {
+                dd : 'day',
+                mm : 'month',
+                YY : 'year',
+                YYYY : 'year',
+                HH : 'hour',
+                ii : 'minute',
+                ss : 'second'
+            };
+            return (obj[type]||null);
+        },
+        myDate = {
+            day : null,
+            month : null,
+            year : null,
+            hour : null,
+            minute : null,
+            second : null
+        };
+    if (pieces !== null)
+        while (pieces.length > 0) {
+            curr = pieces.pop();
+            myDate[map(curr)] = (parseInt(strdate.substring(format.indexOf(curr), (format.indexOf(curr) + curr.length)),10)||null);
         }
-        return null;
-    },
-    myDate = {day:null,month:null,year:null,hour:null,minute:null,second:null};
-    if(pieces !== null)
-    while (pieces.length > 0) {
-        curr = pieces.pop();
-        myDate[map(curr)] = (parseInt(strdate.substring(
-            format.indexOf(curr),
-            (format.indexOf(curr) + curr.length)
-        ),10)||null);
-    }
     var returnDate = new Date;
     returnDate.setFullYear((myDate.year !== null ? myDate.year : 0));
     returnDate.setMonth((myDate.month !== null ? (myDate.month - 1) : 0));
@@ -45,40 +45,42 @@ function dateFormat(format, strdate) {
     return returnDate;
 }
 
-/***
+/*******************************************************************************
  * Formats the given date with the corresponding format.
- * @param {Date} date.
- * @param {String} format. Valid format. PHP date standard.
+ * 
+ * @param {Date}
+ *            date.
+ * @param {String}
+ *            format. Valid format. PHP date standard.
  * @returns {String}
  */
 function formatDate(date, format) {
-    var expr = /(dd|mm|YYYY|YY|HH|ii|ss)/g,
-    pieces = format.match(expr),
-    map = function (obj, type) {
-        switch (type){
-            case 'dd':
-                return obj.getDate();
-            case 'mm':
-                var m = (obj.getMonth() + 1);
-                return (m < 10) ? "0"+m : m;
-            case 'YYYY':
-            case 'YY':
-                return obj.getFullYear();
-            case 'HH':
-                return obj.getHours();
-            case 'ii':
-                return obj.getMinutes();
-            case 'ss':
-                return obj.getSeconds();
+    var expr = /(dd|mm|YYYY|YY|HH|ii|ss)/g, pieces = format.match(expr),
+        map = function(obj, type) {
+            switch (type) {
+                case 'dd':
+                    return obj.getDate();
+                case 'mm':
+                    var m = (obj.getMonth() + 1);
+                    return (m < 10) ? "0" + m : m;
+                case 'YYYY':
+                case 'YY':
+                    return obj.getFullYear();
+                case 'HH':
+                    return obj.getHours();
+                case 'ii':
+                    return obj.getMinutes();
+                case 'ss':
+                    return obj.getSeconds();
+            }
+            return null;
+        },
+        myDate = format;
+    if (pieces !== null)
+        while (pieces.length > 0) {
+            curr = pieces.pop();
+            myDate = myDate.replace(curr, map(date, curr));
         }
-        return null;
-    },
-    myDate = format;
-    if(pieces !== null)
-    while (pieces.length > 0) {
-        curr = pieces.pop();
-        myDate = myDate.replace(curr, map(date, curr));
-    }
-    
+
     return myDate;
 }
