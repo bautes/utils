@@ -8,45 +8,28 @@
  * @returns {Date}
  */
 function dateFormat(format, strdate) {
-    var expr = /(dd|mm|YYYY|YY|HH|ii|ss)/g, pieces = format.match(expr),
-        map = function(type) {
-            var obj = {
-                dd : 'day',
-                mm : 'month',
-                YY : 'year',
-                YYYY : 'year',
-                HH : 'hour',
-                ii : 'minute',
-                ss : 'second'
-            };
-            return (obj[type]||null);
-        },
-        myDate = {
-            day : null,
-            month : null,
-            year : null,
-            hour : null,
-            minute : null,
-            second : null
-        };
+    var expr = /(dd|mm|YYYY|YY|HH|ii|ss)/g,
+        pieces = format.match(expr),
+        myDate = {};
     if (pieces !== null)
         while (pieces.length > 0) {
             curr = pieces.pop();
-            myDate[map(curr)] = (parseInt(strdate.substring(format.indexOf(curr), (format.indexOf(curr) + curr.length)),10)||null);
+            myDate[curr] = (parseInt(strdate.substring(format.indexOf(curr), (format.indexOf(curr) + curr.length)),10)||null);
         }
     var returnDate = new Date;
-    returnDate.setFullYear((myDate.year !== null ? myDate.year : 0));
-    returnDate.setMonth((myDate.month !== null ? (myDate.month - 1) : 0));
-    returnDate.setMonth((myDate.month !== null ? (myDate.month - 1) : 0));
-    returnDate.setDate((myDate.day !== null ? myDate.day : 0));
-    returnDate.setHours((myDate.hour !== null ? myDate.hour : 0));
-    returnDate.setMinutes((myDate.minute !== null ? myDate.minute : 0));
-    returnDate.setSeconds((myDate.second !== null ? myDate.second : 0));
+    returnDate.setFullYear (
+        (myDate.YY||myDate.YYYY||0),
+        ((myDate.mm||1)-1),
+        (myDate.dd||0)
+    );
+    returnDate.setHours(myDate.HH||0);
+    returnDate.setMinutes(myDate.ii||0);
+    returnDate.setSeconds(myDate.ss||0);
     return returnDate;
 }
 
 /*******************************************************************************
- * Formats the given date with the corresponding format.
+ * Formats a given date with the given format output.
  * 
  * @param {Date}
  *            date.
@@ -55,11 +38,19 @@ function dateFormat(format, strdate) {
  * @returns {String}
  */
 function formatDate(date, format) {
-    var expr = /(dd|mm|YYYY|YY|HH|ii|ss)/g, pieces = format.match(expr),
+    var expr = /(DD|dd|MM|mm|YYYY|YY|HH|ii|ss)/g,
+        days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
+        months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+        pieces = format.match(expr),
         map = function(obj, type) {
             switch (type) {
+                case 'DD':
+                    return days[obj.getDay()];
                 case 'dd':
-                    return obj.getDate();
+                    var d = obj.getDate();
+                    return (d < 10) ? "0" + d : d;
+                case 'MM':
+                    return months[obj.getMonth()];
                 case 'mm':
                     var m = (obj.getMonth() + 1);
                     return (m < 10) ? "0" + m : m;
@@ -67,11 +58,14 @@ function formatDate(date, format) {
                 case 'YY':
                     return obj.getFullYear();
                 case 'HH':
-                    return obj.getHours();
+                    var h = obj.getHours();
+                    return (h < 10) ? "0"+h : h;
                 case 'ii':
-                    return obj.getMinutes();
+                    var i = obj.getMinutes();
+                    return (i < 10) ? "0"+i : i;
                 case 'ss':
-                    return obj.getSeconds();
+                    var s = obj.getSeconds();
+                    return (s < 10) ? "0"+s : s;
             }
             return null;
         },
@@ -81,6 +75,5 @@ function formatDate(date, format) {
             curr = pieces.pop();
             myDate = myDate.replace(curr, map(date, curr));
         }
-
     return myDate;
 }
