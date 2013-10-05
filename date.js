@@ -42,6 +42,7 @@ function formatDate(date, format) {
         days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
         months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
         pieces = format.match(expr),
+        curr = null,
         map = function(obj, type) {
             switch (type) {
                 case 'DD':
