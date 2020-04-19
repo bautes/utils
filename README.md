@@ -1,27 +1,33 @@
-date.js
+hooks
 =====
 
-dateFormat
+useWeinre
 -----
-Creates a new date from a string based on the given matching format.
-It works like PHP date_create_from_format function.
+Injects the weinre script in the body.
+
+```
+useWeinre(?"<url_weinre_target")
+```
+
+useModal
+-----
+The idea here is to avoid adding extra html in the components to show the modal.
+The only issue is the extra ReactDOM.render which will require to wrap once again the ThemeContext and the i18nContext.
+
 
 Usage:
+```
+import useModal, { MODALS } from './useModal';
+
+const YourComponent = () => {
+   const {open, close, toggle} = useModal(MODALS.myModal);
+
+  return (
+    <div>
+        <button onClick={modal.open}>
+        ....
+    </div>
+  )
+}
 
 ```
-dateFormat("dd/mm/YYYY HH:ii:ss", "12/10/2013 16:30:55");
-"Sat Oct 12 2013 16:30:55 GMT-0300 (ART)"
-```
-
-formatDate
------
-Formats a date based on given format.
-It works like PHP date function.
-
-Usage:
-
-```
-formatDate(new Date, "dd/mm/YYYY HH:ii:ss");
-"31/08/2013 15:54:36"
-```
-
